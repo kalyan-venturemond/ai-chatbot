@@ -31,7 +31,10 @@ export interface Suggestion {
   id: string;
   documentId: string;
   documentCreatedAt: Date;
-  content: string;
+  originalText: string;
+  suggestedText: string;
+  description: string;
+  isApplied: boolean;
   createdAt: Date;
   userId: string;
 }
