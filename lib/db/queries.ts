@@ -85,8 +85,14 @@ export async function getChatsByUserId({
   };
 }
 
-export async function getChatById({ id }: { id: string }) {
-  return null;
+export async function getChatById({ id }: { id: string }): Promise<Chat | null> {
+  return {
+    id,
+    createdAt: new Date(),
+    userId: MOCK_USER_ID,
+    title: "Mock Chat",
+    visibility: "private",
+  };
 }
 
 export async function saveMessages({ messages }: { messages: DBMessage[] }) {
@@ -188,7 +194,7 @@ export async function getMessageById({ id }: { id: string }) {
       role: "user",
       content: "",
       createdAt: new Date(),
-    },
+    } as unknown as DBMessage,
   ];
 }
 
