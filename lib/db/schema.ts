@@ -4,6 +4,8 @@ export interface User {
   password?: string;
   type: 'guest' | 'regular';
   createdAt: Date;
+  updatedAt?: Date;
+  role?: string;
 }
 
 export interface Chat {
@@ -21,6 +23,8 @@ export interface DBMessage {
   parts: any[];
   content?: string;
   createdAt: Date;
+  updatedAt?: Date;
+  attachments?: any[];
 }
 
 export interface Suggestion {
