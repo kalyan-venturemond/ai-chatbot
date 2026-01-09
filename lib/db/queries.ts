@@ -7,6 +7,8 @@ import type {
   DBMessage,
   Suggestion,
   User,
+  Document,
+  Vote,
 } from "./schema";
 
 // Mock Data
@@ -18,29 +20,30 @@ export async function getUser(email: string): Promise<User[]> {
       id: MOCK_USER_ID,
       email: email,
       password: "mock-hashed-password",
-      role: "user",
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    } as unknown as User,
-  ];
-}
-
-export async function createUser(email: string, password: string) {
-  return [
-    {
-      id: MOCK_USER_ID,
-      email: email,
-      password: "mock-hashed-password",
+      type: "regular",
       createdAt: new Date(),
     },
   ];
 }
 
-export async function createGuestUser() {
+export async function createUser(email: string, password: string): Promise<User[]> {
+  return [
+    {
+      id: MOCK_USER_ID,
+      email: email,
+      password: "mock-hashed-password",
+      type: "regular",
+      createdAt: new Date(),
+    },
+  ];
+}
+
+export async function createGuestUser(): Promise<User[]> {
   return [
     {
       id: "guest-user-id",
       email: `guest-${Date.now()}@example.com`,
+      type: "guest",
       createdAt: new Date(),
     },
   ];
@@ -56,15 +59,15 @@ export async function saveChat({
   userId: string;
   title: string;
   visibility: VisibilityType;
-}) {
+}): Promise<Chat[]> {
   return [];
 }
 
-export async function deleteChatById({ id }: { id: string }) {
+export async function deleteChatById({ id }: { id: string }): Promise<Chat[]> {
   return [];
 }
 
-export async function deleteAllChatsByUserId({ userId }: { userId: string }) {
+export async function deleteAllChatsByUserId({ userId }: { userId: string }): Promise<{ deletedCount: number }> {
   return { deletedCount: 0 };
 }
 
@@ -78,7 +81,7 @@ export async function getChatsByUserId({
   limit: number;
   startingAfter: string | null;
   endingBefore: string | null;
-}) {
+}): Promise<{ chats: Chat[]; hasMore: boolean }> {
   return {
     chats: [],
     hasMore: false,
@@ -95,7 +98,7 @@ export async function getChatById({ id }: { id: string }): Promise<Chat | null> 
   };
 }
 
-export async function saveMessages({ messages }: { messages: DBMessage[] }) {
+export async function saveMessages({ messages }: { messages: DBMessage[] }): Promise<DBMessage[]> {
   return [];
 }
 
@@ -105,11 +108,11 @@ export async function updateMessage({
 }: {
   id: string;
   parts: DBMessage["parts"];
-}) {
+}): Promise<DBMessage[]> {
   return [];
 }
 
-export async function getMessagesByChatId({ id }: { id: string }) {
+export async function getMessagesByChatId({ id }: { id: string }): Promise<DBMessage[]> {
   return [];
 }
 
@@ -121,11 +124,11 @@ export async function voteMessage({
   chatId: string;
   messageId: string;
   type: "up" | "down";
-}) {
+}): Promise<Vote[]> {
   return [];
 }
 
-export async function getVotesByChatId({ id }: { id: string }) {
+export async function getVotesByChatId({ id }: { id: string }): Promise<Vote[]> {
   return [];
 }
 
@@ -141,15 +144,15 @@ export async function saveDocument({
   kind: ArtifactKind;
   content: string;
   userId: string;
-}) {
+}): Promise<Document[]> {
   return [];
 }
 
-export async function getDocumentsById({ id }: { id: string }) {
+export async function getDocumentsById({ id }: { id: string }): Promise<Document[]> {
   return [];
 }
 
-export async function getDocumentById({ id }: { id: string }) {
+export async function getDocumentById({ id }: { id: string }): Promise<Document | null> {
   return {
     id,
     createdAt: new Date(),
@@ -166,7 +169,7 @@ export async function deleteDocumentsByIdAfterTimestamp({
 }: {
   id: string;
   timestamp: Date;
-}) {
+}): Promise<Document[]> {
   return [];
 }
 
@@ -174,7 +177,7 @@ export async function saveSuggestions({
   suggestions,
 }: {
   suggestions: Suggestion[];
-}) {
+}): Promise<Suggestion[]> {
   return [];
 }
 
@@ -182,19 +185,20 @@ export async function getSuggestionsByDocumentId({
   documentId,
 }: {
   documentId: string;
-}) {
+}): Promise<Suggestion[]> {
   return [];
 }
 
-export async function getMessageById({ id }: { id: string }) {
+export async function getMessageById({ id }: { id: string }): Promise<DBMessage[]> {
   return [
     {
       id,
       chatId: "mock-chat-id",
       role: "user",
+      parts: [],
       content: "",
       createdAt: new Date(),
-    } as unknown as DBMessage,
+    },
   ];
 }
 
@@ -204,7 +208,7 @@ export async function deleteMessagesByChatIdAfterTimestamp({
 }: {
   chatId: string;
   timestamp: Date;
-}) {
+}): Promise<DBMessage[]> {
   return [];
 }
 
@@ -214,7 +218,7 @@ export async function updateChatVisibilityById({
 }: {
   chatId: string;
   visibility: "private" | "public";
-}) {
+}): Promise<Chat[]> {
   return [];
 }
 
@@ -224,7 +228,7 @@ export async function updateChatTitleById({
 }: {
   chatId: string;
   title: string;
-}) {
+}): Promise<Chat[]> {
   return [];
 }
 
@@ -234,7 +238,7 @@ export async function getMessageCountByUserId({
 }: {
   id: string;
   differenceInHours: number;
-}) {
+}): Promise<number> {
   return 0;
 }
 
@@ -244,10 +248,10 @@ export async function createStreamId({
 }: {
   streamId: string;
   chatId: string;
-}) {
+}): Promise<any[]> {
   return [];
 }
 
-export async function getStreamIdsByChatId({ chatId }: { chatId: string }) {
+export async function getStreamIdsByChatId({ chatId }: { chatId: string }): Promise<string[]> {
   return [];
 }
