@@ -30,13 +30,14 @@ export interface DBMessage {
 export interface Suggestion {
   id: string;
   documentId: string;
-  documentCreatedAt: Date;
+  documentCreatedAt?: Date;
   originalText: string;
   suggestedText: string;
   description: string;
-  isApplied: boolean;
-  createdAt: Date;
-  userId: string;
+  isApplied?: boolean;
+  isResolved?: boolean;
+  createdAt?: Date;
+  userId?: string;
 }
 
 export interface Document {
